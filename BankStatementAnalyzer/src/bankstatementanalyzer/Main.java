@@ -26,28 +26,44 @@ package bankstatementanalyzer;
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.Month;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
-    public static final String RESOURCES = "src/main/resources";
+  public static final String RESOURCES = "src/main/resources";
 
-    /**
-     * @param args the command line arguments
-     * @throws java.io.IOException
-     */
-    public static void main(final String[] args) throws IOException {
-        if (args.length == 0) {
-            System.out.println("Please enter a filename to analyze.");
-            return;
-        }
-        final Path path = Paths.get(RESOURCES + args[0]);
-        final List<String> lines = Files.readAllLines(path);
-        SimpleBankStatementAnalyzer.printTransactionTotals(lines);
-        SimpleBankStatementAnalyzer.printTransactionTotalsByMonth(lines, Month.JANUARY);
-        SimpleBankStatementAnalyzer.printTransactionTotalsByMonth(lines, Month.FEBRUARY);
-        SimpleBankStatementAnalyzer.printTransactionTotalsByMonth(lines, Month.MARCH);
-        SimpleBankStatementAnalyzer.printTopTenExpenses(lines);
+  /**
+   * @param args the command line arguments
+   * @throws java.io.IOException
+   */
+  public static void main(final String[] args) throws IOException {
+    if (args.length == 0) {
+      System.out.println("Please enter a filename to analyze. ( e.g. /statement.csv )");
+      return;
     }
+    final BankStatementCSVParser parser = new BankStatementCSVParser();
+    final String fileName = args[0];
+    final Path path = Paths.get(RESOURCES + fileName);
+    final List<String> lines = Files.readAllLines(path);
+    final List<BankTransaction> bankTransactions = parser.parseLinesFromCSV(lines);
+
+    System.out.println("The total for all transactions is " + calculateTotalAmount(bankTransactions));
+    System.out.println("Transactions in January " + selectInMonth(bankTransactions, Month.JANUARY));
+    System.out.println("Transactions in February " + selectInMonth(bankTransactions, Month.FEBRUARY));
+    System.out.println("Transactions in March " + selectInMonth(bankTransactions, Month.MARCH));
+  }
+
+  private static double calculateTotalAmount(final List<BankTransaction> bankTransactions) {
+    return bankTransactions.stream()
+            .map((bankTransaction) -> bankTransaction.getAmount())
+            .reduce(0d, (accumulator, _item) -> accumulator + _item);
+  }
+
+  private static double selectInMonth(final List<BankTransaction> bankTransactions, final Month month) {
+    final List<BankTransaction> filteredList = bankTransactions.stream()
+            .filter(transaction -> transaction.getDate().getMonth() == month)
+            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+    return calculateTotalAmount(filteredList);
+  }
 
 }
