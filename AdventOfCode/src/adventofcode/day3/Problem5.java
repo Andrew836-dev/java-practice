@@ -5,6 +5,14 @@
  * starting from the top left and moving 3 squares right, 1 square down each tick
  * count how many trees are in those spaces
  *
+ * Part 2
+ * Using the same map, work out how many trees are on several different paths, then multiply those numbers
+ * the paths are :
+ * 1 right, 1 down
+ * 3 right, 1 down (same as part 1)
+ * 5 right, 1 down
+ * 7 right, 1 down
+ * 1 right, 2 down
  */
 package adventofcode.day3;
 
