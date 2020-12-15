@@ -5,7 +5,7 @@
  */
 package adventofcode;
 
-import adventofcode.day1.Problem1;
+import adventofcode.day2.Problem3;
 import java.io.IOException;
 import java.util.*;
 
@@ -20,12 +20,12 @@ public class AdventExecutor {
    * @throws java.io.IOException
    */
   public static void main(String[] args) throws IOException{
-    List<Integer> input = FileReader.readAsInts("src/adventofcode/input.txt");
+    List<String> input = FileReader.readAllAsStrings("src/adventofcode/input.txt");
 
-    Problem1 problem = new Problem1(input);
+    Problem3 problem = new Problem3(input);
 
-    problem.findSumOfTwoAndPrint(2020);
-    problem.findSumOfThreeAndPrint(2020);
+    System.out.println(problem.countValidPasswordsType1());
+    System.out.println(problem.countValidPasswordsType2());
   }
 
 }

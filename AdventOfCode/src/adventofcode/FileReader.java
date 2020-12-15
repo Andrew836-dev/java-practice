@@ -15,8 +15,12 @@ import java.util.stream.Collectors;
  * @author Andrew Gray <andrew.aj.gray@gmail.com>
  */
 public class FileReader {
-  public static List<Integer> readAsInts(String targetFile) throws IOException {
+  public static List<Integer> readAllAsInts(String targetFile) throws IOException {
+    return readAllAsStrings(targetFile).stream().map(Integer::parseInt).collect(Collectors.toList());
+  }
+  
+  public static List<String> readAllAsStrings(String targetFile) throws IOException {
     Path path = Paths.get(targetFile);
-    return Files.readAllLines(path).stream().map(Integer::parseInt).collect(Collectors.toList());
+    return Files.readAllLines(path).stream().filter(t -> !"".equals(t.trim())).collect(Collectors.toList());
   }
 }
