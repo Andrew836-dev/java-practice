@@ -1,7 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Day 1 Problems
+ * Given a list of integers, find two numbers that add up to 2020, then print the product;
+ * 
+ * Part 2
+ * Given the same list, find three numbers that add up to 2020, then print their product.
  */
 package adventofcode.day1;
 
