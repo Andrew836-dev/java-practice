@@ -41,29 +41,19 @@ public class Main {
       System.out.println("Please enter a filename to analyze. ( e.g. /statement.csv )");
       return;
     }
-    final BankStatementCSVParser parser = new BankStatementCSVParser();
     final String fileName = args[0];
     final Path path = Paths.get(RESOURCES + fileName);
     final List<String> lines = Files.readAllLines(path);
+    final BankStatementCSVParser parser = new BankStatementCSVParser();
     final List<BankTransaction> bankTransactions = parser.parseLinesFromCSV(lines);
+    final BankStatementProcessor processor = new BankStatementProcessor(bankTransactions);
 
-    System.out.println("The total for all transactions is " + calculateTotalAmount(bankTransactions));
-    System.out.println("Transactions in January " + selectInMonth(bankTransactions, Month.JANUARY));
-    System.out.println("Transactions in February " + selectInMonth(bankTransactions, Month.FEBRUARY));
-    System.out.println("Transactions in March " + selectInMonth(bankTransactions, Month.MARCH));
+    System.out.println("The total for all transactions is " + processor.calculateTotalAmount());
+    System.out.println("The total for transactions in January " + processor.calculateTotalInMonth(Month.JANUARY));
+    System.out.println("The total for transactions in February " + processor.calculateTotalInMonth(Month.FEBRUARY));
+    System.out.println("The total for transactions in March " + processor.calculateTotalInMonth(Month.MARCH));
+
+    final String targetDescription = "Tesco";
+    System.out.println("The total for transactions with description " + targetDescription + " " + processor.calculateTotalForDescription(targetDescription));
   }
-
-  private static double calculateTotalAmount(final List<BankTransaction> bankTransactions) {
-    return bankTransactions.stream()
-            .map((bankTransaction) -> bankTransaction.getAmount())
-            .reduce(0d, (accumulator, _item) -> accumulator + _item);
-  }
-
-  private static double selectInMonth(final List<BankTransaction> bankTransactions, final Month month) {
-    final List<BankTransaction> filteredList = bankTransactions.stream()
-            .filter(transaction -> transaction.getDate().getMonth() == month)
-            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-    return calculateTotalAmount(filteredList);
-  }
-
 }
