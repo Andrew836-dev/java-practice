@@ -29,11 +29,12 @@ import java.util.stream.Stream;
  */
 public class Problem9 {
 
-  Stream<Seat> seatStream;
+  List<Seat> seatStream;
 
   public Problem9(List<String> input) {
     seatStream = input.stream()
-            .map(Seat::new);
+            .map(Seat::new)
+            .collect(Collectors.toList());
   }
 
   private class Seat {
@@ -66,12 +67,13 @@ public class Problem9 {
 
   }
 
-  private Stream<Seat> sortedSeatList() {
-    return seatStream.sorted((left, right) -> right.ID - left.ID);
+  private Stream<Seat> sortedSeatStream() {
+    return seatStream.stream()
+            .sorted((left, right) -> right.ID - left.ID);
   }
   
   private Stream<Integer> sortedSeatID() {
-    return sortedSeatList().map(seat -> seat.ID);
+    return sortedSeatStream().map(seat -> seat.ID);
   }
 
   public int findHighestSeatID() {
@@ -83,7 +85,8 @@ public class Problem9 {
   public int findMissingSeatID() {
     List<Integer> sortedSeatIDs = sortedSeatID().collect(Collectors.toList());
     int first = sortedSeatIDs.get(0);
-    for (int i = 1; i < sortedSeatIDs.size(); i++) {
+    int size = sortedSeatIDs.size();
+    for (int i = 1; i < size; i++) {
       int second = sortedSeatIDs.get(i);
       if ((first - second) > 1) {
         return first - 1;
