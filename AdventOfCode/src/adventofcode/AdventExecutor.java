@@ -5,7 +5,7 @@
  */
 package adventofcode;
 
-import adventofcode.day5.Problem9;
+import adventofcode.day6.Problem11;
 import java.io.IOException;
 import java.util.*;
 
@@ -20,12 +20,12 @@ public class AdventExecutor {
    * @throws java.io.IOException
    */
   public static void main(String[] args) throws IOException{
-    List<String> input = FileReader.readAllAsStrings("src/adventofcode/input.txt");
+    List<String> input = FileReader.readAllAsStringsIncludingEmpties("src/adventofcode/input.txt");
 
-    Problem9 problem = new Problem9(input);
+    Problem11 problem = new Problem11(input);
     
-    System.out.println(problem.findHighestSeatID());
-    System.out.println(problem.findMissingSeatID());
+    System.out.println(problem.sumUniqueQuestionsPerGroup());
+    System.out.println(problem.sumOfLettersEntireGroupSelected());
   }
 
 }
